@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="estilos.css" />
+        <title>Fondo Colores</title>
+    </head>
+    <body>
+        <div id="menu"></div>
+
+        <main>
+            <div class="contenedor-principal">
+                <h1>Fondo de Colores</h1>
+                <button class="boton-azul" onclick="toggleCambioColores()">
+                    Colores aleatorios
+                </button>
+            </div>
+        </main>
+
+        <script>
+            fetch('menu.html')
+                .then((res) => res.text())
+
+                .then((html) => {
+                    document.getElementById('menu').innerHTML = html;
+
+                    const enlaces = document.querySelectorAll('.nav-link');
+                    const actual = window.location.pathname.split('/').pop();
+
+                    enlaces.forEach((enlace) => {
+                        if (enlace.getAttribute('href') === actual) {
+                            enlace.classList.add('active');
+                        }
+                    });
+                });
+
+            const coloresGaming = ['#3b82f6', '#ec4899', '#10b981', '#8b5cf6']; // azul, rosa, verde, morado
+            let index = 0;
+            let intervalo;
+
+            function cambiarColorFondo() {
+                document.body.style.backgroundColor = coloresGaming[index];
+                index = (index + 1) % coloresGaming.length;
+            }
+
+            function toggleCambioColores() {
+                const boton = document.querySelector('.boton-azul');
+                if (intervalo) {
+                    clearInterval(intervalo);
+                    intervalo = null;
+                    boton.textContent = 'Colores aleatorios';
+                } else {
+                    cambiarColorFondo(); // cambia inmediatamente
+                    intervalo = setInterval(cambiarColorFondo, 800);
+                    boton.textContent = 'Detener colores';
+                }
+            }
+        </script>
+    </body>
+</html>

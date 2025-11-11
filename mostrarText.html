@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Mostrar/Ocultar texto</title>
+        <link rel="stylesheet" href="estilos.css" />
+    </head>
+    <body>
+        <div id="menu"></div>
+
+        <main>
+            <div class="contenedor-principal">
+                <h1>Mostrar - Ocultar texto</h1>
+
+                <button
+                    id="boton-toggle"
+                    class="boton-azul"
+                    onclick="toggleTexto()"
+                >
+                    Mostrar
+                </button>
+
+                <p id="texto" style="margin-top: 1rem; display: none">
+                    Este es el texto. Si quieres,puedes ocultarlo otra vez!
+                </p>
+            </div>
+        </main>
+
+        <script>
+            fetch('menu.html')
+                .then((res) => res.text())
+
+                .then((html) => {
+                    document.getElementById('menu').innerHTML = html;
+
+                    const enlaces = document.querySelectorAll('.nav-link');
+                    const actual = window.location.pathname.split('/').pop();
+
+                    enlaces.forEach((enlace) => {
+                        if (enlace.getAttribute('href') === actual) {
+                            enlace.classList.add('active');
+                        }
+                    });
+                });
+
+            function toggleTexto() {
+                const parrafo = document.getElementById('texto');
+                const boton = document.getElementById('boton-toggle');
+
+                const visible = parrafo.style.display === 'block';
+                parrafo.style.display = visible ? 'none' : 'block';
+                boton.textContent = visible ? 'Mostrar' : 'Ocultar';
+            }
+        </script>
+    </body>
+</html>

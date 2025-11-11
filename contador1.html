@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Contador Simple</title>
+        <link rel="stylesheet" href="estilos.css" />
+    </head>
+    <body>
+        <div id="menu"></div>
+
+        <main>
+            <div class="contenedor-principal">
+                <h1>Contador Simple</h1>
+                <p id="contador">0</p>
+                <button onclick="contar()">+</button>
+                <button class="boton-secundario" onclick="reiniciar()">
+                    Reiniciar
+                </button>
+            </div>
+        </main>
+
+        <script>
+            fetch('menu.html')
+                .then((res) => res.text())
+
+                .then((html) => {
+                    document.getElementById('menu').innerHTML = html;
+
+                    const enlaces = document.querySelectorAll('.nav-link');
+                    const actual = window.location.pathname.split('/').pop();
+
+                    enlaces.forEach((enlace) => {
+                        if (enlace.getAttribute('href') === actual) {
+                            enlace.classList.add('active');
+                        }
+                    });
+                });
+
+            let contador = 0;
+
+            function contar() {
+                contador++;
+                document.getElementById('contador').textContent = contador;
+            }
+
+            function reiniciar() {
+                contador = 0;
+                document.getElementById('contador').textContent = contador;
+            }
+
+            document
+                .getElementById('contador')
+                .addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        cntar();
+                    }
+                });
+        </script>
+    </body>
+</html>

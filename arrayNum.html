@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Suma con memoria</title>
+        <link rel="stylesheet" href="estilos.css" />
+    </head>
+    <body>
+        <div id="menu"></div>
+
+        <main>
+            <div class="contenedor-principal">
+                <h1>Array sumador</h1>
+
+                <label for="numero">Ingresa un número:</label><br />
+                <input
+                    type="number"
+                    id="numero"
+                    placeholder="Escribe el numero y se irá guardando"
+                /><br />
+
+                <button class="boton-azul" onclick="guardarNumero()">
+                    Añadir
+                </button>
+                <button class="boton-secundario" onclick="calcularSuma()">
+                    Calcular suma
+                </button>
+                <button class="boton-secundario" onclick="resetear()">
+                    Reset
+                </button>
+
+                <div class="lista-contenedor">
+                    <ul id="lista"></ul>
+                </div>
+
+                <p id="resultado"></p>
+            </div>
+        </main>
+
+        <script>
+            fetch('menu.html')
+                .then((res) => res.text())
+
+                .then((html) => {
+                    document.getElementById('menu').innerHTML = html;
+
+                    const enlaces = document.querySelectorAll('.nav-link');
+                    const actual = window.location.pathname.split('/').pop();
+
+                    enlaces.forEach((enlace) => {
+                        if (enlace.getAttribute('href') === actual) {
+                            enlace.classList.add('active');
+                        }
+                    });
+                });
+
+            const numeros = [];
+
+            function guardarNumero() {
+                const input = document.getElementById('numero');
+                const valor = parseFloat(input.value.trim());
+
+                if (!isNaN(valor)) {
+                    numeros.push(valor);
+
+                    const li = document.createElement('li');
+                    li.textContent = valor;
+                    document.getElementById('lista').appendChild(li);
+
+                    input.value = '';
+                    document.getElementById('resultado').textContent = '';
+                }
+            }
+
+            function calcularSuma() {
+                const suma = numeros.reduce((acc, val) => acc + val, 0);
+                document.getElementById(
+                    'resultado'
+                ).textContent = `La suma total es: ${suma}`;
+            }
+
+            function resetear() {
+                numeros.length = 0;
+                document.getElementById('lista').innerHTML = '';
+                document.getElementById('numero').value = '';
+                document.getElementById('resultado').textContent = '';
+            }
+
+            document
+                .getElementById('numero')
+                .addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        guardarNumero();
+                    }
+                });
+        </script>
+    </body>
+</html>

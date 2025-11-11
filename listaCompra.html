@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Lista de Compras</title>
+        <link rel="stylesheet" href="estilos.css" />
+    </head>
+    <body>
+        <div id="menu"></div>
+
+        <main>
+            <main>
+                <div class="contenedor-principal">
+                    <h1>Lista de Compras</h1>
+                    <label for="producto">Nombre del producto:</label><br />
+                    <input
+                        type="text"
+                        id="producto"
+                        placeholder="Agrega a la lista del mercado"
+                    /><br />
+                    <button class="boton-azul" onclick="agregarProducto()">
+                        Añadir
+                    </button>
+
+                    <div class="lista-contenedor">
+                        <ul id="lista"></ul>
+                    </div>
+                </div>
+            </main>
+        </main>
+
+        <script>
+            fetch('menu.html')
+                .then((res) => res.text())
+
+                .then((html) => {
+                    document.getElementById('menu').innerHTML = html;
+
+                    const enlaces = document.querySelectorAll('.nav-link');
+                    const actual = window.location.pathname.split('/').pop();
+
+                    enlaces.forEach((enlace) => {
+                        if (enlace.getAttribute('href') === actual) {
+                            enlace.classList.add('active');
+                        }
+                    });
+                });
+
+            function agregarProducto() {
+                const input = document.getElementById('producto');
+                const nombre = input.value.trim();
+                const lista = document.getElementById('lista');
+
+                if (nombre !== '') {
+                    const li = document.createElement('li');
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.addEventListener('change', () => {
+                        span.classList.toggle('tachado', checkbox.checked);
+                    });
+
+                    const span = document.createElement('span');
+                    span.textContent = nombre;
+
+                    const botonEliminar = document.createElement('button');
+                    botonEliminar.textContent = 'Eliminar';
+                    botonEliminar.className = 'boton-secundario';
+                    botonEliminar.addEventListener('click', () => {
+                        lista.removeChild(li);
+                    });
+
+                    li.appendChild(checkbox);
+                    li.appendChild(span);
+                    li.appendChild(botonEliminar);
+                    lista.appendChild(li);
+
+                    input.value = '';
+                }
+            }
+
+            document
+                .getElementById('producto')
+                .addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        agregarProducto();
+                    }
+                });
+        </script>
+    </body>
+</html>

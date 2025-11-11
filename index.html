@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Manipulación DOM</title>
+        <link rel="stylesheet" href="estilos.css" />
+    </head>
+    <body>
+        <div id="menu"></div>
+        <script>
+            fetch('menu.html')
+                .then((res) => res.text())
+                .then((html) => {
+                    document.getElementById('menu').innerHTML = html;
+                });
+        </script>
+
+        <main>
+            <div class="contenedor-principal">
+                <h1 class="titulo-centrado">Manipulación DOM</h1>
+            </div>
+        </main>
+    </body>
+</html>

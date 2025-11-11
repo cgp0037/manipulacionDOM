@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Registro de Personas</title>
+        <link rel="stylesheet" href="estilos.css" />
+    </head>
+    <body>
+        <div id="menu"></div>
+
+        <main>
+            <div class="contenedor-principal">
+                <h1>Registro de Personas</h1>
+
+                <label for="nombre">Nombre:</label><br />
+                <input
+                    type="text"
+                    id="nombre"
+                    placeholder="Escribe el nombre"
+                /><br />
+
+                <label for="edad">Edad:</label><br />
+                <input
+                    type="number"
+                    id="edad"
+                    placeholder="Escribe la edad"
+                /><br />
+
+                <button class="boton-azul" onclick="agregarPersona()">
+                    Agregar persona
+                </button>
+                <button class="boton-secundario" onclick="mostrarRegistro()">
+                    Ver registro
+                </button>
+
+                <div id="tabla-contenedor" style="margin-top: 2rem"></div>
+            </div>
+        </main>
+
+        <script>
+            fetch('menu.html')
+                .then((res) => res.text())
+
+                .then((html) => {
+                    document.getElementById('menu').innerHTML = html;
+
+                    const enlaces = document.querySelectorAll('.nav-link');
+                    const actual = window.location.pathname.split('/').pop();
+
+                    enlaces.forEach((enlace) => {
+                        if (enlace.getAttribute('href') === actual) {
+                            enlace.classList.add('active');
+                        }
+                    });
+                });
+
+            const personas = [];
+
+            function agregarPersona() {
+                const nombre = document.getElementById('nombre').value.trim();
+                const edad = parseInt(
+                    document.getElementById('edad').value.trim()
+                );
+
+                if (nombre !== '' && !isNaN(edad)) {
+                    personas.push({ nombre, edad });
+                    document.getElementById('nombre').value = '';
+                    document.getElementById('edad').value = '';
+                    document.getElementById('tabla-contenedor').innerHTML = ''; // limpia la tabla si estaba visible
+                }
+            }
+
+            function mostrarRegistro() {
+                const contenedor = document.getElementById('tabla-contenedor');
+
+                if (personas.length === 0) {
+                    contenedor.innerHTML =
+                        '<p>No hay personas registradas.</p>';
+                    return;
+                }
+
+                let tablaHTML = `
+        <table class="tabla-personas">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Edad</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+                personas.forEach((p) => {
+                    tablaHTML += `<tr><td>${p.nombre}</td><td>${p.edad}</td></tr>`;
+                });
+
+                tablaHTML += `</tbody></table>`;
+                contenedor.innerHTML = tablaHTML;
+            }
+
+            document
+                .getElementById('edad')
+                .addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        agregarPersona();
+                    }
+                });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Convertidor de Temperatura</title>
+        <link rel="stylesheet" href="estilos.css" />
+    </head>
+    <body>
+        <div id="menu"></div>
+
+        <main>
+            <div class="contenedor-principal">
+                <h1>Convertidor de Temperatura</h1>
+                <label for="celsius">Grados Celsius:</label><br />
+                <input
+                    type="number"
+                    id="celsius"
+                    placeholder="Temperatura en Celsius"
+                /><br />
+                <button onclick="convertir()">Convertir a Fahrenheit</button>
+                <p id="resultado"></p>
+            </div>
+        </main>
+
+        <script>
+            fetch('menu.html')
+                .then((res) => res.text())
+
+                .then((html) => {
+                    document.getElementById('menu').innerHTML = html;
+
+                    const enlaces = document.querySelectorAll('.nav-link');
+                    const actual = window.location.pathname.split('/').pop();
+
+                    enlaces.forEach((enlace) => {
+                        if (enlace.getAttribute('href') === actual) {
+                            enlace.classList.add('active');
+                        }
+                    });
+                });
+
+            function convertir() {
+                const celsius = parseFloat(
+                    document.getElementById('celsius').value
+                );
+                const resultado = document.getElementById('resultado');
+
+                if (!isNaN(celsius)) {
+                    const fahrenheit = (celsius * 9) / 5 + 32;
+                    resultado.textContent = `${celsius}°C equivalen a ${fahrenheit.toFixed(
+                        2
+                    )}°F`;
+                } else {
+                    resultado.textContent =
+                        'Por favor, ingresa una temperatura válida.';
+                }
+            }
+
+            document.getElementById('celsius').addEventListener('input', () => {
+                document.getElementById('resultado').textContent = '';
+            });
+
+            document
+                .getElementById('celsius')
+                .addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        convertir();
+                    }
+                });
+        </script>
+    </body>
+</html>
